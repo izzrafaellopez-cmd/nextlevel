@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NexLevel Gaming</title>
+  <title>NextLevel Gaming</title>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet"/>
 
   <style>
@@ -523,9 +524,9 @@
 <section id="about">
   <div class="about-content">
     <div class="about-text">
-      <div class="section-label">// Über NexLevel</div>
+      <div class="section-label">// Über NextLevel</div>
       <h2 class="section-title">Gaming ist<br>unser Leben</h2>
-      <p class="section-desc">NexLevel Gaming wurde 2025 von zwei leidenschaftlichen Gamern gegründet — mit einem klaren Ziel: Die beste Gaming-Destination der Schweiz zu bauen. Kein Bullshit, keine überteuerten Preise. Nur das Beste für echte Gamer.</p>
+      <p class="section-desc">NextLevel Gaming wurde 2025 von zwei leidenschaftlichen Gamern gegründet — mit einem klaren Ziel: Die beste Gaming-Destination der Schweiz zu bauen. Kein Bullshit, keine überteuerten Preise. Nur das Beste für echte Gamer.</p>
       <p class="section-desc" style="margin-top: -30px;">Wir verstehen die Community, weil wir Teil davon sind. Jedes Produkt, das wir führen, haben wir selbst getestet und geliebt.</p>
       <div class="about-features">
         <div class="feature">
@@ -571,21 +572,21 @@
   <div style="text-align:center;margin-bottom:60px;">
     <div class="section-label" style="justify-content:center;display:block;">// Das Team</div>
     <h2 class="section-title" style="margin-bottom:12px;">Die Köpfe dahinter</h2>
-    <p style="font-size:16px;color:#6a7e95;max-width:500px;margin:0 auto;">Zwei Gamer, eine Vision — NexLevel Gaming als die Nr. 1 Gaming-Destination zu etablieren.</p>
+    <p style="font-size:16px;color:#6a7e95;max-width:500px;margin:0 auto;">Zwei Gamer, eine Vision — NextLevel Gaming als die Nr. 1 Gaming-Destination zu etablieren.</p>
   </div>
   <div class="team-grid" style="max-width:800px;margin:0 auto;">
     <div class="team-card">
       <div class="team-avatar">🎯</div>
       <div class="team-name">Joshua Lopez</div>
       <div class="team-role">Founder & CEO</div>
-      <div class="team-bio">Joshua ist der Visionär hinter NexLevel. Mit seiner Leidenschaft für Competitive Gaming und Business-Mindset hat er NexLevel von einem kleinen Projekt zu einer der bekanntesten Gaming-Destinations der Schweiz gemacht. Wenn er nicht am Aufbauen ist, ist er wieder am PC und spielt verschiedene spiele.</div>
+      <div class="team-bio">Joshua ist der Visionär hinter NextLevel. Mit seiner Leidenschaft für Competitive Gaming und Business-Mindset hat er NextLevel von einem kleinen Projekt zu einer der bekanntesten Gaming-Destinations der Schweiz gemacht. Wenn er nicht am Aufbauen ist, ist er wieder am PC und spielt verschiedene spiele.</div>
       <span class="team-tag">Competitive Gamer</span>
     </div>
     <div class="team-card">
       <div class="team-avatar">⚙️</div>
       <div class="team-name">Rafal Lopez</div>
       <div class="team-role">Co-Founder & CTO</div>
-      <div class="team-bio">Rafael ist der technische Architekt von NexLevel. Als Hardware-Enthusiast und Tech-Nerd sorgt er dafür, dass die Plattform immer schnell, sicher und auf dem neuesten Stand ist. Er kennt jeden Chip, jedes Frame und jeden Build — in- und auswendig.</div>
+      <div class="team-bio">Rafael ist der technische Architekt von NextLevel. Als Hardware-Enthusiast und Tech-Nerd sorgt er dafür, dass die Plattform immer schnell, sicher und auf dem neuesten Stand ist. Er kennt jeden Chip, jedes Frame und jeden Build — in- und auswendig.</div>
       <span class="team-tag">Hardware Wizard</span>
     </div>
   </div>
@@ -596,7 +597,7 @@
   <div class="section-label" style="display:block;">// Kontakt</div>
   <h2 class="section-title" style="margin-bottom:16px;">GG — Lass uns reden</h2>
   <p style="font-size:16px;color:#6a7e95;margin-bottom:40px;max-width:480px;margin-left:auto;margin-right:auto;">Fragen, Kooperationen, oder willst du einfach über Games reden? Hit us up.</p>
-  <a href="mailto:info@nexlevel.ch" class="btn-primary" style="display:inline-block;">info@nexlevel.ch</a>
+  <a href="/cdn-cgi/l/email-protection#c6afa8a0a986a8a3beaaa3b0a3aae8a5ae" class="btn-primary" style="display:inline-block;"><span class="__cf_email__" data-cfemail="a0c9cec6cfe0cec5d8ccc5d6c5cc8ec3c8">[email&#160;protected]</span></a>
 </section>
 
 <!-- FOOTER -->
@@ -624,7 +625,7 @@
   </div>
 </footer>
 <div class="footer-bottom">
-  <p>© 2025 NexLevel Gaming. Alle Rechte vorbehalten.</p>
+  <p>© 2025 NextLevel Gaming. Alle Rechte vorbehalten.</p>
   <p style="color:#1a2530;">Built by Rafael Lopez & Joshua Lopez</p>
 </div>
 
@@ -1388,7 +1389,7 @@
   <div id="authRegister" style="display:none;">
     <div class="auth-logo">NEX<span>LEVEL</span></div>
     <div class="auth-title">KONTO ERSTELLEN</div>
-    <div class="auth-subtitle">Werde Teil der NexLevel Community</div>
+    <div class="auth-subtitle">Werde Teil der NextLevel Community</div>
     <div class="auth-tabs">
       <button class="auth-tab" onclick="switchAuth('login')">Login</button>
       <button class="auth-tab active" onclick="switchAuth('register')">Registrieren</button>
@@ -1467,6 +1468,27 @@
   try { users = JSON.parse(localStorage.getItem('nx_users') || '[]'); } catch(e){}
   try { currentUser = JSON.parse(localStorage.getItem('nx_current') || 'null'); } catch(e){}
 
+
+  function sendNotification(type, name, email, address) {
+    // Send via Web3Forms (free, no backend needed)
+    var formData = new FormData();
+    formData.append('access_key', '00000000-0000-0000-0000-000000000000'); // placeholder
+    formData.append('subject', 'NextLevel Shop - Neue ' + type + ': ' + name);
+    formData.append('from_name', 'NextLevel Shop');
+    formData.append('to', 'info.nextlevel.ch@gmail.com');
+    formData.append('message', 
+      'Neue ' + type + ' auf NextLevel Gaming!\n\n' +
+      'Name: ' + name + '\n' +
+      'E-Mail: ' + email + '\n' +
+      (address ? 'Adresse: ' + address + '\n' : '') +
+      'Zeit: ' + new Date().toLocaleString('de-CH')
+    );
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      body: formData
+    }).catch(function(){});
+  }
+
   function updateNavAuth() {
     var btn = document.getElementById('navAuthBtn');
     var label = document.getElementById('navAuthLabel');
@@ -1511,6 +1533,7 @@
     try { localStorage.setItem('nx_current', JSON.stringify(user)); } catch(e){}
     updateNavAuth();
     prefillAddress();
+    sendNotification('LOGIN', user.first + ' ' + user.last, user.email);
     showAuthSuccess('Hallo ' + user.first + '! Schon dass du wieder da bist.');
   }
 
@@ -1536,7 +1559,8 @@
     try { localStorage.setItem('nx_current', JSON.stringify(user)); } catch(e){}
     updateNavAuth();
     prefillAddress();
-    showAuthSuccess('Willkommen bei NexLevel, ' + first + '! Dein Account wurde erstellt.');
+    sendNotification('REGISTRIERUNG', first + ' ' + last, email, street + ', ' + zip + ' ' + city + ', ' + country);
+    showAuthSuccess('Willkommen bei NextLevel, ' + first + '! Dein Account wurde erstellt.');
   }
 
   function showAuthSuccess(msg) {
@@ -1561,14 +1585,4 @@
       var el = document.getElementById(id);
       if (el && fields[id]) el.value = fields[id];
     });
-    var c = document.getElementById('addrCountry');
-    if (c && currentUser.country) c.value = currentUser.country;
-  }
-
-  updateNavAuth();
-  if (currentUser) prefillAddress();
-</script>
-
-<script>renderProducts('all');</script>
-</body>
-</html>
+    var
