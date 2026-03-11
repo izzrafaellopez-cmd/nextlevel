@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NextLevel Gaming — Schweizer Gaming Store</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --neon: #00f5ff;
+      --neon2: #ff0066;
+      --gold: #ffd700;
+      --dark: #030812;
+      --darker: #010409;
+      --card: #0a1628;
+      --border: rgba(0,245,255,0.15);
+      --text: #c8d8f0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--darker); color: var(--text); font-family: 'Rajdhani', Arial, sans-serif; font-size: 17px; overflow-x: hidden; max-width: 100vw; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--darker); }
+    ::-webkit-scrollbar-thumb { background: var(--neon); border-radius: 3px; }
+
+    /* ── TOP BAR ── */
+    .topbar {
+      background: #000;
+      border-bottom: 1px solid rgba(0,245,255,0.1);
+      padding: 6px 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 12px; color: #556070; letter-spacing: 1px;
+    }
+    .topbar a { color: #556070; text-decoration: none; transition: color 0.2s; }
+    .topbar a:hover { color: var(--neon); }
+    .topbar-links { display: flex; gap: 20px; }
+    .topbar-shipping { color: var(--neon); font-weight: 600; }
+
+    /* ── NAV ── */
+    nav {
+      position: sticky; top: 0; width: 100%; z-index: 200;
+      background: rgba(3,8,18,0.97);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+      display: flex; align-items: center; gap: 20px;
+      height: 70px;
+    }
+    .logo {
+      font-family: 'Orbitron', monospace; font-weight: 900; font-size: 22px;
+      letter-spacing: 3px; color: var(--neon); text-shadow: 0 0 20px var(--neon);
+      text-decoration: none; white-space: nowrap; flex-shrink: 0;
+    }
+    .logo span { color: var(--neon2); }
+
+    /* Search Bar */
+    .nav-search {
+      flex: 1; display: flex; max-width: 600px;
+      border: 1px solid var(--border); overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .nav-search:focus-within { border-color: var(--neon); }
+    .search-category {
+      background: rgba(0,245,255,0.08); border: none; border-right: 1px solid var(--border);
+      color: var(--neon); font-family: 'Rajdhani', sans-serif; font-size: 12px;
+      padding: 0 12px; cursor: pointer; white-space: nowrap; letter-spacing: 1px;
+      outline: none;
+    }
+    .search-category option { background: #0a1628; }
+    .search-input {
+      flex: 1; background: rgba(0,245,255,0.04); border: none; outline: none;
+      padding: 0 16px; color: #fff; font-family: 'Rajdhani', sans-serif; font-size: 15px;
+    }
+    .search-input::placeholder { color: #3a4a5a; }
+    .search-btn {
+      background: var(--neon); border: none; padding: 0 18px; cursor: pointer;
+      color: #000; font-size: 18px; transition: background 0.2s;
+    }
+    .search-btn:hover { background: #00d4e8; }
+
+    .nav-actions { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+
+    .nav-icon-btn {
+      background: transparent; border: 1px solid var(--border); color: var(--text);
+      width: 42px; height: 42px; cursor: pointer; display: flex; align-items: center;
+      justify-content: center; transition: border-color 0.2s, color 0.2s; position: relative;
+    }
+    .nav-icon-btn:hover { border-color: var(--neon); color: var(--neon); }
+    .nav-badge {
+      position: absolute; top: -6px; right: -6px;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--neon2); color: #fff;
+      font-size: 10px; font-weight: 900; font-family: 'Orbitron', monospace;
+      display: none; align-items: center; justify-content: center;
+    }
+    .nav-badge.visible { display: flex; }
+
+    .nav-auth-btn {
+      font-family: 'Orbitron', monospace; font-size: 11px; letter-spacing: 2px;
+      padding: 8px 18px; background: transparent; border: 1px solid var(--neon);
+      color: var(--neon); cursor: pointer; display: flex; align-items: center; gap: 8px;
+      transition: background 0.2s, box-shadow 0.2s; white-space: nowrap;
+    }
+    .nav-auth-btn:hover { background: rgba(0,245,255,0.1); box-shadow: 0 0 20px rgba(0,245,255,0.3); }
+    .nav-auth-btn.logged-in { border-color: var(--gold); color: var(--gold); }
+
+    /* ── CATEGORY NAV ── */
+    .cat-nav {
+      background: rgba(3,8,18,0.98);
+      border-bottom: 1px solid var(--border);
+      padding: 0 40px;
+      display: flex; align-items: center; gap: 0;
+      position: sticky; top: 70px; z-index: 190;
+    }
+    .cat-nav-item {
+      font-family: 'Rajdhani', sans-serif; font-weight: 600;
+      font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+      color: #6a7e95; text-decoration: none;
+      padding: 14px 18px; border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+      cursor: pointer; white-space: nowrap;
+    }
+    .cat-nav-item:hover, .cat-nav-item.active { color: var(--neon); border-bottom-color: var(--neon); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 90vh; display: flex; align-items: center; justify-content: center;
+      text-align: center; position: relative; padding: 100px 40px 80px; overflow: hidden;
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(0,245,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,245,255,0.04) 1px, transparent 1px);
+      background-size: 60px 60px; animation: gridPulse 8s ease-in-out infinite;
+    }
+    @keyframes gridPulse { 0%,100% { opacity: 0.5; } 50% { opacity: 1; } }
+    .hero-glow { position: absolute; width: min(700px, 100vw); height: min(700px, 100vw); background: radial-gradient(circle, rgba(0,245,255,0.12) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+    .hero-glow2 { position: absolute; width: min(400px, 80vw); height: min(400px, 80vw); background: radial-gradient(circle, rgba(255,0,102,0.1) 0%, transparent 70%); top: 30%; right: 10%; pointer-events: none; animation: float 6s ease-in-out infinite; }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-30px); } }
+    .hero-content { position: relative; z-index: 2; max-width: 900px; }
+    .hero-tag { display: inline-block; font-size: 12px; letter-spacing: 5px; text-transform: uppercase; color: var(--neon); border: 1px solid var(--neon); padding: 6px 20px; margin-bottom: 30px; animation: fadeDown 0.8s ease both; }
+    .hero h1 { font-family: 'Orbitron', monospace; font-size: clamp(42px, 8vw, 96px); font-weight: 900; line-height: 1; color: #fff; text-shadow: 0 0 60px rgba(0,245,255,0.4); animation: fadeDown 0.8s 0.2s ease both; margin-bottom: 10px; }
+    .hero h1 span { color: var(--neon); }
+    .hero-sub { font-family: 'Orbitron', monospace; font-size: clamp(16px, 3vw, 28px); color: var(--neon2); letter-spacing: 6px; text-transform: uppercase; animation: fadeDown 0.8s 0.3s ease both; margin-bottom: 28px; }
+    .hero p { font-size: 18px; color: #8aa0c0; max-width: 580px; margin: 0 auto 40px; line-height: 1.7; animation: fadeDown 0.8s 0.4s ease both; }
+    .hero-btns { display: flex; gap: 20px; justify-content: center; animation: fadeDown 0.8s 0.5s ease both; flex-wrap: wrap; }
+    @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+    .btn-primary { font-family: 'Orbitron', monospace; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; padding: 16px 40px; background: var(--neon); color: #000; font-weight: 700; border: none; cursor: pointer; text-decoration: none; clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%); transition: transform 0.2s, box-shadow 0.2s; display: inline-block; }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 40px rgba(0,245,255,0.5); }
+    .btn-outline { font-family: 'Orbitron', monospace; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; padding: 16px 40px; background: transparent; color: var(--text); font-weight: 600; border: 1px solid var(--border); cursor: pointer; text-decoration: none; clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%); transition: border-color 0.2s, color 0.2s; display: inline-block; }
+    .btn-outline:hover { border-color: var(--neon); color: var(--neon); }
+
+    /* ── DEALS BANNER ── */
+    .deals-banner {
+      background: linear-gradient(90deg, #0d1a0d, #0a1628, #1a0d0d);
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+      padding: 20px 40px; display: flex; align-items: center; gap: 40px; overflow: hidden;
+    }
+    .deal-card {
+      display: flex; align-items: center; gap: 16px;
+      background: rgba(0,245,255,0.05); border: 1px solid var(--border);
+      padding: 12px 20px; flex-shrink: 0; cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .deal-card:hover { border-color: var(--neon); }
+    .deal-emoji { font-size: 28px; }
+    .deal-info .deal-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: var(--neon2); }
+    .deal-info .deal-name { font-family: 'Orbitron', monospace; font-size: 13px; font-weight: 700; color: #fff; }
+    .deal-info .deal-price { font-size: 13px; color: var(--gold); }
+    .deal-badge { background: var(--neon2); color: #fff; font-size: 10px; font-family: 'Orbitron', monospace; font-weight: 900; padding: 4px 8px; }
+
+    /* ── STATS ── */
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .stat { padding: 40px 20px; text-align: center; border-right: 1px solid var(--border); transition: background 0.3s; }
+    .stat:last-child { border-right: none; }
+    .stat:hover { background: rgba(0,245,255,0.03); }
+    .stat-num { font-family: 'Orbitron', monospace; font-size: 38px; font-weight: 900; color: var(--neon); text-shadow: 0 0 20px rgba(0,245,255,0.5); }
+    .stat-label { font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: #556070; margin-top: 6px; }
+
+    /* ── SECTION ── */
+    section { padding: 80px 40px; }
+    .section-label { font-size: 11px; letter-spacing: 6px; text-transform: uppercase; color: var(--neon); margin-bottom: 14px; }
+    .section-title { font-family: 'Orbitron', monospace; font-size: clamp(28px, 4vw, 48px); font-weight: 900; color: #fff; margin-bottom: 16px; line-height: 1.1; }
+    .section-desc { font-size: 16px; color: #6a7e95; max-width: 560px; line-height: 1.7; margin-bottom: 50px; }
+
+    /* ── STORE TOOLBAR ── */
+    #store { background: var(--dark); }
+    .store-toolbar {
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px; margin-bottom: 30px;
+    }
+    .store-filters { display: flex; gap: 8px; flex-wrap: wrap; }
+    .filter-btn {
+      font-family: 'Rajdhani', sans-serif; font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+      padding: 8px 18px; background: transparent; border: 1px solid var(--border);
+      color: #6a7e95; cursor: pointer; transition: all 0.2s;
+    }
+    .filter-btn.active, .filter-btn:hover { border-color: var(--neon); color: var(--neon); background: rgba(0,245,255,0.05); }
+
+    .store-sort-row {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 30px;
+    }
+    .sort-label { font-size: 13px; color: #556070; letter-spacing: 1px; }
+    .sort-select {
+      background: rgba(0,245,255,0.05); border: 1px solid var(--border); color: var(--text);
+      font-family: 'Rajdhani', sans-serif; font-size: 14px; padding: 8px 14px; cursor: pointer; outline: none;
+    }
+    .sort-select option { background: #0a1628; }
+    .result-count { font-size: 13px; color: #556070; margin-left: auto; }
+
+    /* ── PRODUCT CARD ── */
+    .store-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+    .product-card {
+      background: var(--card); border: 1px solid var(--border);
+      position: relative; overflow: hidden; cursor: pointer;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+      display: flex; flex-direction: column;
+    }
+    .product-card:hover { transform: translateY(-5px); border-color: rgba(0,245,255,0.4); box-shadow: 0 16px 40px rgba(0,245,255,0.08); }
+    .product-card:hover .product-img { transform: scale(1.06); }
+    .product-badge { position: absolute; top: 12px; left: 12px; z-index: 2; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; padding: 4px 10px; font-family: 'Orbitron', monospace; font-weight: 700; }
+    .badge-new { background: var(--neon); color: #000; }
+    .badge-hot { background: var(--neon2); color: #fff; }
+    .badge-sale { background: var(--gold); color: #000; }
+    
+    .product-wishlist {
+      position: absolute; top: 12px; right: 12px; z-index: 2;
+      width: 32px; height: 32px; background: rgba(1,4,9,0.8); border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: border-color 0.2s, background 0.2s; font-size: 14px;
+    }
+    .product-wishlist:hover { border-color: var(--neon2); background: rgba(255,0,102,0.1); }
+    .product-wishlist.active { color: var(--neon2); border-color: var(--neon2); }
+
+    .product-img-wrap { height: 190px; overflow: hidden; background: linear-gradient(135deg, #0d1f3c, #0a1628); display: flex; align-items: center; justify-content: center; }
+    .product-img { font-size: 80px; transition: transform 0.4s; user-select: none; }
+    .product-info { padding: 18px; flex: 1; display: flex; flex-direction: column; }
+    .product-genre { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--neon); margin-bottom: 6px; }
+    .product-name { font-family: 'Orbitron', monospace; font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px; line-height: 1.3; }
+    .product-desc { font-size: 13px; color: #556070; margin-bottom: 12px; line-height: 1.5; flex: 1; }
+    
+    /* Star Ratings */
+    .product-rating { display: flex; align-items: center; gap: 6px; margin-bottom: 12px; }
+    .stars { color: var(--gold); font-size: 13px; letter-spacing: 1px; }
+    .rating-count { font-size: 12px; color: #556070; }
+    .rating-score { font-size: 12px; color: var(--gold); font-weight: 700; }
+
+    .product-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .product-price { font-family: 'Orbitron', monospace; font-size: 20px; font-weight: 900; color: var(--gold); }
+    .product-price .old { font-size: 13px; color: #556070; text-decoration: line-through; display: block; }
+    .product-price .savings { font-size: 11px; color: #4caf50; letter-spacing: 1px; display: block; margin-top: 2px; }
+
+    .add-btn {
+      font-family: 'Orbitron', monospace; font-size: 10px; letter-spacing: 1px;
+      padding: 9px 14px; background: var(--neon); color: #000; font-weight: 700;
+      border: none; cursor: pointer;
+      clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+      transition: box-shadow 0.2s, transform 0.2s; white-space: nowrap;
+    }
+    .add-btn:hover { box-shadow: 0 0 20px rgba(0,245,255,0.6); transform: scale(1.04); }
+
+    /* Delivery info on card */
+    .product-delivery { font-size: 11px; color: #4caf50; margin-top: 8px; padding-top: 10px; border-top: 1px solid rgba(0,245,255,0.08); }
+
+    /* ── PRODUCT DETAIL MODAL ── */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(1,4,9,0.9); backdrop-filter: blur(8px); z-index: 800; }
+    .modal-overlay.open { display: block; }
+    .product-modal {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -60%);
+      width: 94%; max-width: 860px; max-height: 90vh; overflow-y: auto;
+      background: var(--dark); border: 1px solid var(--border);
+      box-shadow: 0 0 80px rgba(0,245,255,0.15), 0 40px 80px rgba(0,0,0,0.8);
+      z-index: 900; opacity: 0; pointer-events: none;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .product-modal::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--neon2), var(--neon)); }
+    .product-modal.open { opacity: 1; pointer-events: all; transform: translate(-50%, -50%); }
+    .product-modal::-webkit-scrollbar { width: 4px; }
+    .product-modal::-webkit-scrollbar-thumb { background: var(--neon); }
+    .modal-close { position: absolute; top: 14px; right: 14px; width: 36px; height: 36px; background: var(--card); border: 1px solid var(--border); color: #6a7e95; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; transition: border-color 0.2s, color 0.2s; }
+    .modal-close:hover { border-color: var(--neon2); color: var(--neon2); }
+    .modal-body { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    .modal-image { background: linear-gradient(135deg, #0d1f3c, #0a1628); display: flex; align-items: center; justify-content: center; min-height: 320px; position: relative; }
+    .modal-emoji { font-size: 120px; }
+    .modal-info { padding: 40px 36px; }
+    .modal-genre { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--neon); margin-bottom: 10px; }
+    .modal-name { font-family: 'Orbitron', monospace; font-size: 22px; font-weight: 900; color: #fff; margin-bottom: 12px; line-height: 1.2; }
+    .modal-rating { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+    .modal-price-main { font-family: 'Orbitron', monospace; font-size: 32px; font-weight: 900; color: var(--gold); text-shadow: 0 0 20px rgba(255,215,0,0.3); }
+    .modal-price-old { font-size: 15px; color: #556070; text-decoration: line-through; margin-left: 12px; }
+    .modal-savings { font-size: 13px; color: #4caf50; margin-left: 12px; }
+    .modal-desc { font-size: 15px; color: #8aa0c0; line-height: 1.7; margin: 16px 0; }
+    .modal-features { list-style: none; margin-bottom: 20px; }
+    .modal-features li { font-size: 14px; color: #8aa0c0; padding: 5px 0; padding-left: 16px; position: relative; }
+    .modal-features li::before { content: '▸'; position: absolute; left: 0; color: var(--neon); }
+    .modal-stock { font-size: 13px; color: #4caf50; margin-bottom: 16px; }
+    .modal-delivery { background: rgba(0,245,255,0.04); border: 1px solid var(--border); padding: 14px; margin-bottom: 20px; font-size: 13px; color: #8aa0c0; line-height: 1.6; }
+    .modal-delivery strong { color: var(--neon); }
+    .modal-qty-row { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+    .modal-qty-label { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #556070; }
+    .modal-qty { display: flex; align-items: center; gap: 0; border: 1px solid var(--border); }
+    .modal-qty button { width: 36px; height: 36px; background: transparent; border: none; color: var(--neon); font-size: 18px; cursor: pointer; transition: background 0.2s; }
+    .modal-qty button:hover { background: rgba(0,245,255,0.1); }
+    .modal-qty span { width: 40px; text-align: center; font-family: 'Orbitron', monospace; font-size: 15px; color: #fff; }
+    .modal-add-btn { width: 100%; padding: 16px; background: var(--neon); color: #000; font-family: 'Orbitron', monospace; font-size: 13px; font-weight: 900; letter-spacing: 3px; border: none; cursor: pointer; clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%); transition: box-shadow 0.2s, transform 0.2s; }
+    .modal-add-btn:hover { box-shadow: 0 0 40px rgba(0,245,255,0.6); transform: translateY(-2px); }
+    .modal-wishlist-btn { width: 100%; margin-top: 10px; padding: 12px; background: transparent; border: 1px solid var(--border); color: #6a7e95; font-family: 'Orbitron', monospace; font-size: 11px; letter-spacing: 2px; cursor: pointer; transition: border-color 0.2s, color 0.2s; }
+    .modal-wishlist-btn:hover { border-color: var(--neon2); color: var(--neon2); }
+
+    /* Reviews */
+    .modal-reviews { padding: 30px 36px; border-top: 1px solid var(--border); }
+    .review-header { font-family: 'Orbitron', monospace; font-size: 14px; letter-spacing: 2px; color: #fff; margin-bottom: 20px; }
+    .review-summary { display: flex; gap: 30px; align-items: center; margin-bottom: 24px; }
+    .review-big-score { font-family: 'Orbitron', monospace; font-size: 56px; font-weight: 900; color: var(--gold); line-height: 1; }
+    .review-bars { flex: 1; }
+    .review-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
+    .review-bar-label { font-size: 12px; color: #556070; width: 40px; text-align: right; flex-shrink: 0; }
+    .review-bar-track { flex: 1; height: 6px; background: rgba(0,245,255,0.1); }
+    .review-bar-fill { height: 100%; background: var(--gold); }
+    .review-bar-count { font-size: 11px; color: #556070; width: 30px; }
+    .review-list { display: flex; flex-direction: column; gap: 16px; }
+    .review-item { background: var(--card); border: 1px solid var(--border); padding: 18px; }
+    .review-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+    .reviewer-name { font-family: 'Orbitron', monospace; font-size: 13px; color: #fff; }
+    .review-date { font-size: 12px; color: #3a4a5a; }
+    .review-text { font-size: 14px; color: #8aa0c0; line-height: 1.6; }
+
+    /* ── "ALSO BOUGHT" ── */
+    .also-bought { padding: 0 40px 60px; background: var(--dark); }
+    .also-bought-title { font-family: 'Orbitron', monospace; font-size: 18px; color: #fff; margin-bottom: 20px; letter-spacing: 2px; }
+    .also-bought-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+    .also-card { background: var(--card); border: 1px solid var(--border); padding: 14px; text-align: center; cursor: pointer; transition: border-color 0.2s; }
+    .also-card:hover { border-color: var(--neon); }
+    .also-emoji { font-size: 36px; margin-bottom: 8px; }
+    .also-name { font-size: 11px; color: #c8d8f0; line-height: 1.3; margin-bottom: 4px; }
+    .also-price { font-size: 12px; color: var(--gold); font-family: 'Orbitron', monospace; font-weight: 700; }
+
+    /* ── ABOUT ── */
+    #about { position: relative; }
+    .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+    .about-text .section-desc { max-width: 100%; }
+    .about-features { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; }
+    .feature { border: 1px solid var(--border); padding: 18px; transition: border-color 0.2s, background 0.2s; }
+    .feature:hover { border-color: var(--neon); background: rgba(0,245,255,0.03); }
+    .feature-icon { font-size: 28px; margin-bottom: 8px; }
+    .feature-title { font-family: 'Orbitron', monospace; font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .feature-desc { font-size: 13px; color: #556070; line-height: 1.5; }
+
+    /* ── TEAM ── */
+    .team-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
+    .team-card { background: var(--card); border: 1px solid var(--border); padding: 40px; position: relative; overflow: hidden; transition: border-color 0.3s, transform 0.3s; }
+    .team-card:hover { border-color: var(--neon); transform: translateY(-4px); }
+    .team-card::before { content: ''; position: absolute; top: 0; left: 0; width: 3px; height: 0; background: var(--neon); transition: height 0.4s; }
+    .team-card:hover::before { height: 100%; }
+    .team-avatar { width: 80px; height: 80px; border-radius: 0; display: flex; align-items: center; justify-content: center; font-size: 36px; background: linear-gradient(135deg, rgba(0,245,255,0.1), rgba(255,0,102,0.1)); border: 1px solid var(--border); margin-bottom: 20px; }
+    .team-name { font-family: 'Orbitron', monospace; font-size: 20px; font-weight: 900; color: #fff; margin-bottom: 6px; }
+    .team-role { font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: var(--neon); margin-bottom: 16px; }
+    .team-bio { font-size: 14px; color: #6a7e95; line-height: 1.7; }
+    .team-tag { display: inline-block; margin-top: 16px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--neon2); border: 1px solid rgba(255,0,102,0.3); padding: 4px 12px; }
+
+    /* ── TOAST ── */
+    .toast { position: fixed; top: 140px; right: 30px; background: var(--card); border: 1px solid var(--neon); padding: 14px 22px; font-family: 'Orbitron', monospace; font-size: 12px; color: var(--neon); box-shadow: 0 0 30px rgba(0,245,255,0.2); transform: translateX(200%); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 9999; max-width: 280px; }
+    .toast.show { transform: translateX(0); }
+
+    /* ── CART FAB ── */
+    .cart-fab { position: fixed; bottom: 32px; right: 32px; z-index: 500; display: flex; align-items: center; gap: 10px; padding: 14px 22px; background: var(--neon); color: #000; font-family: 'Orbitron', monospace; font-size: 12px; font-weight: 900; letter-spacing: 2px; border: none; cursor: pointer; clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%); box-shadow: 0 0 30px rgba(0,245,255,0.45), 0 8px 32px rgba(0,0,0,0.5); transition: transform 0.2s, box-shadow 0.2s; animation: fabPulse 3s ease-in-out infinite; }
+    .cart-fab:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 0 50px rgba(0,245,255,0.7), 0 12px 40px rgba(0,0,0,0.6); }
+    @keyframes fabPulse { 0%,100% { box-shadow: 0 0 30px rgba(0,245,255,0.45), 0 8px 32px rgba(0,0,0,0.5); } 50% { box-shadow: 0 0 50px rgba(0,245,255,0.7), 0 8px 32px rgba(0,0,0,0.5); } }
+    .cart-badge { position: absolute; top: -10px; right: -10px; width: 26px; height: 26px; border-radius: 50%; background: var(--neon2); color: #fff; font-family: 'Orbitron', monospace; font-size: 11px; font-weight: 900; display: none; align-items: center; justify-content: center; border: 2px solid var(--darker); box-shadow: 0 0 12px rgba(255,0,102,0.7); }
+    .cart-badge.visible { display: flex; }
+    .cart-badge.pulse { animation: badgePop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    @keyframes badgePop { from { transform: scale(0.4); } to { transform: scale(1); } }
+
+    /* ── CART DRAWER ── */
+    .cart-overlay { display: none; position: fixed; inset: 0; background: rgba(1,4,9,0.7); backdrop-filter: blur(4px); z-index: 600; }
+    .cart-overlay.open { display: block; }
+    .cart-drawer { position: fixed; top: 0; right: 0; width: 420px; max-width: 100vw; height: 100dvh; background: var(--darker); border-left: 1px solid var(--border); box-shadow: -20px 0 80px rgba(0,0,0,0.7); z-index: 700; display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .cart-drawer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--neon2), var(--neon)); }
+    .cart-drawer.open { transform: translateX(0); }
+    .cart-header { display: flex; align-items: center; justify-content: space-between; padding: 24px 28px 20px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    .cart-title { font-family: 'Orbitron', monospace; font-size: 15px; font-weight: 900; letter-spacing: 3px; color: #fff; display: flex; align-items: center; gap: 12px; }
+    .cart-close { width: 36px; height: 36px; background: var(--card); border: 1px solid var(--border); color: #6a7e95; font-size: 14px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color 0.2s, color 0.2s; }
+    .cart-close:hover { border-color: var(--neon2); color: var(--neon2); }
+    .cart-body { flex: 1; overflow-y: auto; padding: 20px 28px; }
+    .cart-body::-webkit-scrollbar { width: 4px; }
+    .cart-body::-webkit-scrollbar-thumb { background: var(--neon); }
+    .cart-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; min-height: 260px; text-align: center; opacity: 0.6; }
+    .cart-item { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid rgba(0,245,255,0.08); animation: slideIn 0.3s ease; }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+    .cart-item-emoji { width: 52px; height: 52px; background: linear-gradient(135deg, #0d1f3c, #0a1628); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 26px; flex-shrink: 0; }
+    .cart-item-info { flex: 1; }
+    .cart-item-name { font-family: 'Orbitron', monospace; font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+    .cart-item-price { font-family: 'Orbitron', monospace; font-size: 13px; color: var(--gold); margin-bottom: 8px; }
+    .cart-item-controls { display: flex; align-items: center; gap: 6px; }
+    .qty-btn { width: 26px; height: 26px; background: var(--card); border: 1px solid var(--border); color: var(--neon); font-size: 15px; cursor: pointer; transition: border-color 0.2s, background 0.2s; display: flex; align-items: center; justify-content: center; }
+    .qty-btn:hover { border-color: var(--neon); background: rgba(0,245,255,0.1); }
+    .qty-num { font-family: 'Orbitron', monospace; font-size: 13px; font-weight: 700; color: #fff; min-width: 20px; text-align: center; }
+    .remove-btn { width: 26px; height: 26px; background: transparent; border: 1px solid rgba(255,0,102,0.3); color: var(--neon2); font-size: 11px; cursor: pointer; transition: background 0.2s, border-color 0.2s; margin-left: 4px; display: flex; align-items: center; justify-content: center; }
+    .remove-btn:hover { background: rgba(255,0,102,0.1); border-color: var(--neon2); }
+    .cart-footer { padding: 20px 28px 36px; border-top: 1px solid var(--border); background: var(--card); flex-shrink: 0; overflow-y: auto; max-height: 60vh; }
+    .cart-total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .cart-total-label { font-family: 'Orbitron', monospace; font-size: 11px; letter-spacing: 4px; color: #556070; text-transform: uppercase; }
+    .cart-total-amt { font-family: 'Orbitron', monospace; font-size: 22px; font-weight: 900; color: var(--gold); text-shadow: 0 0 20px rgba(255,215,0,0.4); }
+    .cart-shipping { font-size: 12px; color: #4caf50; margin-bottom: 16px; }
+    .payment-section { margin-bottom: 16px; }
+    .payment-label { font-size: 11px; letter-spacing: 4px; color: var(--neon); text-transform: uppercase; margin-bottom: 12px; }
+    .payment-options { display: flex; flex-direction: column; gap: 10px; }
+    .pay-option { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: var(--darker); border: 1px solid var(--border); cursor: pointer; transition: border-color 0.2s, background 0.2s; text-align: left; width: 100%; position: relative; }
+    .pay-option:hover { border-color: rgba(0,245,255,0.4); }
+    .pay-option.selected { border-color: var(--neon); background: rgba(0,245,255,0.04); }
+    .pay-icon { color: #c8d8f0; display: flex; align-items: center; justify-content: center; width: 36px; flex-shrink: 0; }
+    .pay-option.selected .pay-icon { color: var(--neon); }
+    .pay-info { flex: 1; }
+    .pay-name { font-family: 'Orbitron', monospace; font-size: 12px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+    .pay-sub { font-size: 11px; color: #556070; }
+    .pay-check { font-size: 13px; color: var(--neon); opacity: 0; transition: opacity 0.2s; font-weight: 900; }
+    .pay-option.selected .pay-check { opacity: 1; }
+    .checkout-btn { width: 100%; display: flex; align-items: center; justify-content: center; gap: 12px; padding: 16px; background: var(--neon); color: #000; font-family: 'Orbitron', monospace; font-size: 13px; font-weight: 900; letter-spacing: 3px; border: none; cursor: pointer; clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%); transition: box-shadow 0.2s, transform 0.2s; margin-top: 4px; }
+    .checkout-btn:hover { box-shadow: 0 0 40px rgba(0,245,255,0.6); transform: translateY(-2px); }
+    .checkout-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
+    .stripe-field-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #556070; margin-bottom: 6px; margin-top: 14px; font-family: 'Rajdhani', sans-serif; }
+    .stripe-input-field { width: 100%; background: var(--darker); border: 1px solid var(--border); padding: 12px 14px; color: #c8d8f0; font-family: 'Rajdhani', sans-serif; font-size: 15px; outline: none; transition: border-color 0.2s; margin-bottom: 2px; }
+    .stripe-input-field:focus { border-color: var(--neon); }
+    .stripe-input-field::placeholder { color: #2a3a4a; }
+    .stripe-error { color: var(--neon2); font-size: 12px; margin-top: 8px; font-family: 'Rajdhani', sans-serif; min-height: 18px; }
+    .twint-info-box { border: 1px solid rgba(0,159,227,0.4); background: rgba(0,159,227,0.05); padding: 16px; text-align: center; }
+
+    /* ── WISHLIST PANEL ── */
+    .wishlist-overlay { display: none; position: fixed; inset: 0; background: rgba(1,4,9,0.7); backdrop-filter: blur(4px); z-index: 600; }
+    .wishlist-overlay.open { display: block; }
+    .wishlist-panel { position: fixed; top: 0; right: 0; width: 380px; max-width: 100vw; height: 100dvh; background: var(--darker); border-left: 1px solid var(--border); z-index: 700; display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+    .wishlist-panel::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--neon), var(--neon2)); }
+    .wishlist-panel.open { transform: translateX(0); }
+    .wishlist-header { display: flex; align-items: center; justify-content: space-between; padding: 24px 24px 18px; border-bottom: 1px solid var(--border); }
+    .wishlist-title { font-family: 'Orbitron', monospace; font-size: 14px; font-weight: 900; letter-spacing: 2px; color: #fff; }
+    .wishlist-body { flex: 1; overflow-y: auto; padding: 20px 24px; }
+    .wishlist-item { display: flex; gap: 14px; padding: 14px 0; border-bottom: 1px solid rgba(0,245,255,0.08); align-items: center; }
+    .wishlist-emoji { font-size: 28px; width: 48px; height: 48px; background: var(--card); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .wishlist-info { flex: 1; }
+    .wishlist-name { font-family: 'Orbitron', monospace; font-size: 11px; color: #fff; margin-bottom: 4px; }
+    .wishlist-price { font-size: 12px; color: var(--gold); }
+    .wishlist-add { font-family: 'Orbitron', monospace; font-size: 10px; padding: 6px 10px; background: var(--neon); color: #000; border: none; cursor: pointer; font-weight: 900; white-space: nowrap; }
+    .wishlist-empty { text-align: center; padding: 60px 20px; opacity: 0.5; }
+    .wishlist-remove { background: transparent; border: none; color: #556070; cursor: pointer; font-size: 16px; padding: 4px; transition: color 0.2s; }
+    .wishlist-remove:hover { color: var(--neon2); }
+
+    /* ── FOOTER ── */
+    footer { background: var(--darker); border-top: 1px solid var(--border); padding: 60px 40px; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 50px; }
+    .footer-brand .logo { font-size: 18px; display: block; margin-bottom: 14px; }
+    .footer-brand p { font-size: 14px; color: #3a4a5a; line-height: 1.7; max-width: 260px; }
+    .footer-col h4 { font-family: 'Orbitron', monospace; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; color: #fff; margin-bottom: 18px; }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 10px; }
+    .footer-col ul a { font-size: 14px; color: #3a4a5a; text-decoration: none; transition: color 0.2s; }
+    .footer-col ul a:hover { color: var(--neon); }
+    .footer-bottom { border-top: 1px solid var(--border); padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; }
+    .footer-bottom p { font-size: 12px; color: #2a3540; letter-spacing: 1px; }
+    .footer-payment-icons { display: flex; gap: 8px; }
+    .pay-icon-badge { background: var(--card); border: 1px solid var(--border); padding: 5px 12px; font-size: 11px; color: #556070; letter-spacing: 1px; }
+
+    /* ── AUTH MODAL ── */
+    .auth-overlay { display: none; position: fixed; inset: 0; background: rgba(1,4,9,0.85); backdrop-filter: blur(6px); z-index: 800; }
+    .auth-overlay.open { display: block; }
+    .auth-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%,-60%); width: 92%; max-width: 460px; max-height: 90vh; overflow-y: auto; background: var(--card); border: 1px solid var(--border); box-shadow: 0 0 80px rgba(0,245,255,0.15),0 40px 80px rgba(0,0,0,0.8); z-index: 900; padding: 40px 30px 36px; opacity: 0; pointer-events: none; transition: opacity 0.3s, transform 0.3s; }
+    .auth-modal::before { content:''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--neon2), var(--neon)); }
+    .auth-modal.open { opacity: 1; pointer-events: all; transform: translate(-50%,-50%); }
+    .auth-modal::-webkit-scrollbar { width: 4px; }
+    .auth-modal::-webkit-scrollbar-thumb { background: var(--neon); }
+    .auth-close { position: absolute; top: 14px; right: 14px; width: 32px; height: 32px; background: var(--darker); border: 1px solid var(--border); color: #6a7e95; font-size: 13px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: border-color 0.2s, color 0.2s; }
+    .auth-close:hover { border-color: var(--neon2); color: var(--neon2); }
+    .auth-logo { font-family: 'Orbitron', monospace; font-size: 20px; font-weight: 900; color: var(--neon); letter-spacing: 3px; text-shadow: 0 0 20px rgba(0,245,255,0.5); margin-bottom: 8px; }
+    .auth-logo span { color: var(--neon2); }
+    .auth-title { font-family: 'Orbitron', monospace; font-size: 15px; font-weight: 900; color: #fff; letter-spacing: 2px; margin-bottom: 4px; }
+    .auth-subtitle { font-size: 13px; color: #556070; margin-bottom: 20px; }
+    .auth-tabs { display: flex; gap: 0; margin-bottom: 20px; border: 1px solid var(--border); }
+    .auth-tab { flex: 1; padding: 10px; background: transparent; border: none; color: #556070; font-family: 'Orbitron', monospace; font-size: 11px; letter-spacing: 2px; cursor: pointer; transition: all 0.2s; }
+    .auth-tab.active { background: var(--neon); color: #000; font-weight: 700; }
+    .auth-field-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: #556070; margin-bottom: 6px; margin-top: 12px; font-family: 'Rajdhani', sans-serif; }
+    .auth-input { width: 100%; background: var(--darker); border: 1px solid var(--border); padding: 12px 14px; color: #c8d8f0; font-family: 'Rajdhani', sans-serif; font-size: 15px; outline: none; transition: border-color 0.2s; margin-bottom: 2px; }
+    .auth-input:focus { border-color: var(--neon); }
+    .auth-input::placeholder { color: #2a3a4a; }
+    .auth-error { color: var(--neon2); font-size: 12px; margin-top: 8px; min-height: 18px; font-family: 'Rajdhani', sans-serif; }
+    .auth-btn { width: 100%; margin-top: 18px; padding: 16px; background: var(--neon); color: #000; font-family: 'Orbitron', monospace; font-size: 13px; font-weight: 900; letter-spacing: 3px; border: none; cursor: pointer; clip-path: polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%); transition: box-shadow 0.2s, transform 0.2s; }
+    .auth-btn:hover { box-shadow: 0 0 30px rgba(0,245,255,0.5); transform: translateY(-2px); }
+    .auth-switch { font-size: 13px; color: #556070; text-align: center; margin-top: 14px; }
+    .auth-switch a { color: var(--neon); cursor: pointer; text-decoration: underline; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1100px) { footer { grid-template-columns: 1fr 1fr; } .topbar { display: none; } }
+    @media (max-width: 900px) {
+      nav { padding: 0 16px; }
+      .nav-search { display: none; }
+      .cat-nav { overflow-x: auto; padding: 0 16px; }
+      section { padding: 60px 20px; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .about-content { grid-template-columns: 1fr; gap: 40px; }
+      .team-grid { grid-template-columns: 1fr; }
+      .modal-body { grid-template-columns: 1fr; }
+      .modal-image { min-height: 200px; }
+      footer { grid-template-columns: 1fr; gap: 30px; padding: 40px 20px; }
+      .footer-bottom { padding: 20px; flex-direction: column; gap: 10px; }
+      .cart-drawer, .wishlist-panel { width: 100vw; }
+      .cart-fab { padding: 14px 18px; }
+      .deals-banner { padding: 16px 20px; gap: 16px; }
+    }
+  
+  /* ── MOBILE OVERFLOW FIX ─────────────────────── */
+  * { max-width: 100%; }
+  img, video, iframe { max-width: 100%; }
+  
+  @media (max-width: 768px) {
+    nav { padding: 0 14px !important; }
+    nav ul { display: none !important; }
+    .nav-auth-btn { padding: 7px 12px !important; font-size: 10px !important; }
+    
+    .hero { padding: 100px 16px 60px !important; }
+    .hero h1 { font-size: clamp(38px, 12vw, 80px) !important; }
+    .hero-sub { font-size: clamp(16px, 5vw, 28px) !important; }
+    .hero-content { max-width: 100% !important; padding: 0 !important; }
+    .hero-btns { flex-direction: column !important; align-items: center !important; gap: 12px !important; }
+    .btn-primary, .btn-outline { width: 100% !important; max-width: 280px !important; text-align: center !important; }
+    
+    section { padding: 60px 16px !important; }
+    .section-title { font-size: clamp(24px, 7vw, 48px) !important; }
+    
+    .stats { grid-template-columns: repeat(2, 1fr) !important; gap: 16px !important; padding: 40px 16px !important; }
+    
+    .store-filters { flex-wrap: wrap !important; gap: 8px !important; justify-content: center !important; }
+    .filter-btn { font-size: 10px !important; padding: 7px 12px !important; }
+    .store-grid { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
+    
+    .about-content { grid-template-columns: 1fr !important; gap: 30px !important; }
+    .about-features { grid-template-columns: 1fr 1fr !important; }
+    
+    .team-grid { grid-template-columns: 1fr !important; }
+    
+    footer { grid-template-columns: 1fr !important; gap: 24px !important; padding: 40px 16px !important; }
+    .footer-bottom { flex-direction: column !important; text-align: center !important; padding: 16px !important; }
+    
+    .cart-drawer { width: 100vw !important; max-width: 100vw !important; }
+    .cart-fab-label { display: none !important; }
+    
+    .auth-modal { width: 96% !important; padding: 28px 16px 24px !important; max-height: 92vh !important; }
+    
+    h1, h2, h3 { word-break: break-word !important; }
+  }
+  
+  @media (max-width: 480px) {
+    .store-grid { grid-template-columns: 1fr !important; }
+    .about-features { grid-template-columns: 1fr !important; }
+    .stats { grid-template-columns: repeat(2, 1fr) !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-shipping">🚚 Kostenloser Versand ab CHF 50 — Express 1-2 Tage 🇨🇭</div>
+  <div class="topbar-links">
+    <a href="#about">Über uns</a>
+    <a href="#">Bestellstatus</a>
+    <a href="#contact">Support</a>
+    <a href="#" onclick="openAuth('login'); return false;">Mein Konto</a>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">NEX<span>LEVEL</span></a>
+  <div class="nav-search">
+    <select class="search-category" id="searchCategory">
+      <option>Alle</option>
+      <option>Shooter</option>
+      <option>RPG</option>
+      <option>Action</option>
+      <option>Hardware</option>
+      <option>Gear</option>
+    </select>
+    <input class="search-input" id="searchInput" placeholder="Suche nach Games, Hardware, Gear..." oninput="handleSearch()" onkeydown="if(event.key==='Enter') handleSearch()"/>
+    <button class="search-btn" onclick="handleSearch()">🔍</button>
+  </div>
+  <div class="nav-actions">
+    <button class="nav-icon-btn" onclick="openWishlist()" title="Wunschliste" style="position:relative;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+      <span class="nav-badge" id="wishlistBadge">0</span>
+    </button>
+    <button class="nav-auth-btn" id="navAuthBtn" onclick="openAuth('login')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span id="navAuthLabel">LOGIN</span>
+    </button>
+    <button class="nav-icon-btn" onclick="openCart()" style="position:relative;" title="Warenkorb">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      <span class="nav-badge visible" id="cartNavBadge" style="display:none;">0</span>
+    </button>
+  </div>
+</nav>
+
+<!-- CATEGORY NAV -->
+<div class="cat-nav">
+  <a class="cat-nav-item active" onclick="filterProducts('all',this)">🎮 Alle</a>
+  <a class="cat-nav-item" onclick="filterProducts('shooter',this)">🔫 Shooter</a>
+  <a class="cat-nav-item" onclick="filterProducts('rpg',this)">🐉 RPG</a>
+  <a class="cat-nav-item" onclick="filterProducts('action',this)">⚔️ Action</a>
+  <a class="cat-nav-item" onclick="filterProducts('hardware',this)">🎧 Hardware</a>
+  <a class="cat-nav-item" onclick="filterProducts('gear',this)">⌨️ Gaming Gear</a>
+  <a class="cat-nav-item" href="#about">📦 Über uns</a>
+  <a class="cat-nav-item" href="#team">👥 Team</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-content">
+    <div class="hero-tag">// Next-Gen Gaming Universe · Schweiz 🇨🇭</div>
+    <h1>NEX<span>LEVEL</span></h1>
+    <div class="hero-sub">Gaming</div>
+    <p>Dein Portal für die besten Games, Hardware und Gaming-Gear. Curated for Champions — designed for those who play to win.</p>
+    <div class="hero-btns">
+      <a href="#store" class="btn-primary">Store Betreten</a>
+      <a href="#about" class="btn-outline">Mehr Erfahren</a>
+    </div>
+  </div>
+</div>
+
+<!-- DEALS BANNER -->
+<div class="deals-banner" id="dealsBanner">
+  <div style="font-family:'Orbitron',monospace;font-size:13px;font-weight:900;color:var(--neon2);letter-spacing:3px;white-space:nowrap;">🔥 TOP DEALS</div>
+  <!-- Deals injected by JS -->
+</div>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Games & Produkte</div></div>
+  <div class="stat"><div class="stat-num">50K+</div><div class="stat-label">Zufriedene Gamer</div></div>
+  <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Support Online</div></div>
+  <div class="stat"><div class="stat-num">#1</div><div class="stat-label">Gaming Store CH</div></div>
+</div>
+
+<!-- STORE -->
+<section id="store">
+  <div class="section-label">// Gaming Store</div>
+  <h2 class="section-title">Top Games & Gear</h2>
+  <p class="section-desc">Die heissesten Releases, Deals und Exklusives — alle an einem Ort. Für PC, Console & Beyond.</p>
+
+  <div class="store-toolbar">
+    <div class="store-filters" id="storeFilters">
+      <button class="filter-btn active" onclick="filterProducts('all', this)">Alle</button>
+      <button class="filter-btn" onclick="filterProducts('action', this)">Action</button>
+      <button class="filter-btn" onclick="filterProducts('rpg', this)">RPG</button>
+      <button class="filter-btn" onclick="filterProducts('shooter', this)">Shooter</button>
+      <button class="filter-btn" onclick="filterProducts('hardware', this)">Hardware</button>
+      <button class="filter-btn" onclick="filterProducts('gear', this)">Gear</button>
+    </div>
+  </div>
+
+  <div class="store-sort-row">
+    <span class="sort-label">Sortieren:</span>
+    <select class="sort-select" onchange="sortProducts(this.value)">
+      <option value="default">Standard</option>
+      <option value="price-asc">Preis ↑</option>
+      <option value="price-desc">Preis ↓</option>
+      <option value="rating">Bewertung</option>
+      <option value="name">Name A–Z</option>
+    </select>
+    <span class="result-count" id="resultCount">8 Produkte</span>
+  </div>
+
+  <div class="store-grid" id="storeGrid"></div>
+</section>
+
+<!-- ALSO BOUGHT -->
+<div class="also-bought">
+  <div class="also-bought-title">// Kunden kauften auch</div>
+  <div class="also-bought-grid" id="alsoBoughtGrid"></div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-content">
+    <div class="about-text">
+      <div class="section-label">// Über NextLevel</div>
+      <h2 class="section-title">Gaming ist<br>unser Leben</h2>
+      <p class="section-desc">NextLevel Gaming wurde 2025 von zwei leidenschaftlichen Gamern gegründet — mit einem klaren Ziel: Die beste Gaming-Destination der Schweiz zu bauen. Kein Bullshit, keine überteuerten Preise. Nur das Beste für echte Gamer.</p>
+      <p class="section-desc" style="margin-top:-30px;">Wir verstehen die Community, weil wir Teil davon sind. Jedes Produkt, das wir führen, haben wir selbst getestet und geliebt.</p>
+      <div class="about-features">
+        <div class="feature"><div class="feature-icon">⚡</div><div class="feature-title">Blitzlieferung</div><div class="feature-desc">1-7 Tage Delivery in der ganzen Schweiz.</div></div>
+        <div class="feature"><div class="feature-icon">🎮</div><div class="feature-title">Gamer-Kuratiert</div><div class="feature-desc">Nur Produkte, die wir selbst empfehlen.</div></div>
+        <div class="feature"><div class="feature-icon">🔒</div><div class="feature-title">Sicher & Einfach</div><div class="feature-desc">Verschlüsselte Zahlung, einfache Returns.</div></div>
+        <div class="feature"><div class="feature-icon">🏆</div><div class="feature-title">Pro Support</div><div class="feature-desc">Echte Gamer helfen dir 24/7.</div></div>
+      </div>
+    </div>
+    <div>
+      <div style="border:1px solid var(--border);padding:50px;background:var(--card);text-align:center;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(135deg,rgba(0,245,255,0.05),rgba(255,0,102,0.05));pointer-events:none;"></div>
+        <div style="font-size:100px;margin-bottom:20px;">🕹️</div>
+        <div style="font-family:'Orbitron',monospace;font-size:32px;font-weight:900;color:var(--neon);text-shadow:0 0 30px rgba(0,245,255,0.5);">LEVEL UP</div>
+        <div style="font-size:13px;letter-spacing:4px;text-transform:uppercase;color:#556070;margin-top:8px;">Your Gaming Experience</div>
+        <div style="margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <div style="border:1px solid var(--border);padding:14px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--neon);">EST. 2025</div>
+          <div style="border:1px solid var(--border);padding:14px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--neon2);">SWISS MADE</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team" style="background:var(--dark);">
+  <div style="text-align:center;margin-bottom:60px;">
+    <div class="section-label" style="display:block;">// Das Team</div>
+    <h2 class="section-title" style="margin-bottom:12px;">Die Köpfe dahinter</h2>
+    <p style="font-size:16px;color:#6a7e95;max-width:500px;margin:0 auto;">Zwei Gamer, eine Vision — NextLevel Gaming als die Nr. 1 Gaming-Destination der Schweiz zu etablieren.</p>
+  </div>
+  <div class="team-grid" style="max-width:800px;margin:0 auto;">
+    <div class="team-card">
+      <div class="team-avatar">🎯</div>
+      <div class="team-name">Joshua Lopez</div>
+      <div class="team-role">Founder & CEO</div>
+      <div class="team-bio">Joshua ist der Visionär hinter NextLevel. Mit seiner Leidenschaft für Competitive Gaming und Business-Mindset hat er NextLevel von einem kleinen Projekt zu einer der bekanntesten Gaming-Destinations der Schweiz gemacht.</div>
+      <span class="team-tag">Competitive Gamer</span>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">⚙️</div>
+      <div class="team-name">Rafael Lopez</div>
+      <div class="team-role">Co-Founder & CTO</div>
+      <div class="team-bio">Rafael ist der technische Architekt von NextLevel. Als Hardware-Enthusiast und Tech-Nerd sorgt er dafür, dass die Plattform immer schnell, sicher und auf dem neuesten Stand ist.</div>
+      <span class="team-tag">Hardware Wizard</span>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="text-align:center;">
+  <div class="section-label" style="display:block;">// Kontakt</div>
+  <h2 class="section-title" style="margin-bottom:16px;">GG — Lass uns reden</h2>
+  <p style="font-size:16px;color:#6a7e95;margin-bottom:40px;max-width:480px;margin-left:auto;margin-right:auto;">Fragen, Kooperationen, oder willst du einfach über Games reden? Hit us up.</p>
+  <a href="/cdn-cgi/l/email-protection#ec85828a83c28289949880899a8980c28f84ac8b818d8580c28f8381" class="btn-primary"><span class="__cf_email__" data-cfemail="c4adaaa2abeaaaa1bcb0a8a1b2a1a8eaa7ac84a3a9a5ada8eaa7aba9">[email&#160;protected]</span></a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <a href="#" class="logo">NEX<span>LEVEL</span></a>
+    <p>Dein Gaming-Universum. Curated by Gamers, built for Champions. Schweiz 🇨🇭</p>
+  </div>
+  <div class="footer-col">
+    <h4>Shop</h4>
+    <ul>
+      <li><a href="#store">Alle Produkte</a></li>
+      <li><a href="#store">Games</a></li>
+      <li><a href="#store">Hardware</a></li>
+      <li><a href="#store">Deals</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Info</h4>
+    <ul>
+      <li><a href="#about">Über uns</a></li>
+      <li><a href="#team">Team</a></li>
+      <li><a href="#contact">Kontakt</a></li>
+      <li><a href="#">Bestellstatus</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Rechtliches</h4>
+    <ul>
+      <li><a href="#">Datenschutz</a></li>
+      <li><a href="#">AGB</a></li>
+      <li><a href="#">Impressum</a></li>
+      <li><a href="#">Retourenportal</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <p>© 2025 NextLevel Gaming. Alle Rechte vorbehalten.</p>
+  <div class="footer-payment-icons">
+    <span class="pay-icon-badge">VISA</span>
+    <span class="pay-icon-badge">MASTERCARD</span>
+    <span class="pay-icon-badge">TWINT</span>
+    <span class="pay-icon-badge">AMEX</span>
+  </div>
+  <p style="color:#1a2530;">Built by Rafael Lopez & Joshua Lopez</p>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">✓ In den Warenkorb!</div>
+
+<!-- CART FAB -->
+<button class="cart-fab" onclick="openCart()">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+  <span>WARENKORB</span>
+  <span class="cart-badge" id="cartBadge">0</span>
+</button>
+
+<!-- CART OVERLAY & DRAWER -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <div class="cart-title">🛒 WARENKORB</div>
+    <button class="cart-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="cart-body" id="cartBody">
+    <div class="cart-empty"><div style="font-size:60px;margin-bottom:16px;">🛒</div><div style="font-family:'Orbitron',monospace;font-size:14px;color:#556070;letter-spacing:2px;">WARENKORB LEER</div><div style="font-size:13px;color:#3a4a5a;margin-top:8px;">Füge Produkte hinzu!</div></div>
+  </div>
+  <div class="cart-footer" id="cartFooter" style="display:none">
+    <div class="cart-total-row">
+      <span class="cart-total-label">TOTAL</span>
+      <span class="cart-total-amt" id="cartTotalAmt">CHF 0.00</span>
+    </div>
+    <div class="cart-shipping">✓ Kostenloser Versand inklusive</div>
+    <div class="payment-section">
+      <div class="payment-label">// Zahlungsmethode</div>
+      <div class="payment-options">
+        <button class="pay-option selected" data-method="card" onclick="selectPayment('card')">
+          <div class="pay-icon"><svg width="22" height="16" viewBox="0 0 22 16" fill="none"><rect x="0.5" y="0.5" width="21" height="15" rx="2.5" stroke="currentColor"/><rect x="0" y="4" width="22" height="3" fill="currentColor" opacity="0.4"/><rect x="2" y="10" width="6" height="2" rx="1" fill="currentColor"/><rect x="10" y="10" width="4" height="2" rx="1" fill="currentColor"/></svg></div>
+          <div class="pay-info"><div class="pay-name">Kreditkarte</div><div class="pay-sub">Visa / Mastercard / Amex</div></div>
+          <div class="pay-check">✓</div>
+        </button>
+        <button class="pay-option" data-method="twint" onclick="selectPayment('twint')">
+          <div class="pay-icon"><svg width="22" height="22" viewBox="0 0 40 40" fill="none"><rect width="40" height="40" rx="8" fill="#009FE3"/><text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-family="Arial Black,sans-serif" font-weight="900" font-size="11" fill="white">TWINT</text></svg></div>
+          <div class="pay-info"><div class="pay-name">TWINT</div><div class="pay-sub">Schweizer Mobile Payment</div></div>
+          <div class="pay-check">✓</div>
+        </button>
+      </div>
+      <div id="stripeCardForm" style="margin-top:14px;background:rgba(0,245,255,0.03);border:1px solid var(--border);padding:18px 16px 12px;">
+        <div class="stripe-field-label">Karteninhaber</div>
+        <input type="text" id="cardName" class="stripe-input-field" placeholder="Max Mustermann" autocomplete="cc-name"/>
+        <div class="stripe-field-label">Kartennummer</div>
+        <input type="text" id="cardNumber" class="stripe-input-field" placeholder="4242 4242 4242 4242" maxlength="19" oninput="formatCard(this)" autocomplete="cc-number"/>
+        <div style="display:flex;gap:10px;margin-top:10px;">
+          <div style="flex:1"><div class="stripe-field-label">Ablaufdatum</div><input type="text" id="cardExpiry" class="stripe-input-field" placeholder="MM/JJ" maxlength="5" oninput="formatExpiry(this)"/></div>
+          <div style="flex:1"><div class="stripe-field-label">CVC</div><input type="text" id="cardCvc" class="stripe-input-field" placeholder="123" maxlength="3"/></div>
+        </div>
+        <div id="stripe-error" class="stripe-error"></div>
+      </div>
+      <div id="twintInfo" style="display:none;margin-top:12px;">
+        <div class="twint-info-box"><div style="font-size:28px;margin-bottom:8px;">📱</div><div style="font-family:'Orbitron',monospace;font-size:12px;color:#fff;margin-bottom:4px;">TWINT ZAHLUNG</div><div style="font-size:12px;color:#556070;line-height:1.6;">Du wirst nach dem Klick zur TWINT-Zahlungsseite weitergeleitet.</div></div>
+      </div>
+    </div>
+    <button class="checkout-btn" id="checkoutBtn" onclick="checkout()">
+      <span id="checkoutBtnText">JETZT KAUFEN</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+    <div style="font-size:11px;color:#2a3540;text-align:center;margin-top:14px;letter-spacing:1px;">🔒 Sichere SSL-Verschlüsselung</div>
+    <div class="address-section">
+      <div class="payment-label" style="margin-top:20px;">// Lieferadresse</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+        <div><div class="stripe-field-label">Vorname</div><input type="text" id="addrFirst" class="stripe-input-field" placeholder="Max"/></div>
+        <div><div class="stripe-field-label">Nachname</div><input type="text" id="addrLast" class="stripe-input-field" placeholder="Mustermann"/></div>
+      </div>
+      <div class="stripe-field-label">Strasse & Hausnummer</div>
+      <input type="text" id="addrStreet" class="stripe-input-field" placeholder="Bahnhofstrasse 1" style="margin-bottom:8px;"/>
+      <div style="display:grid;grid-template-columns:1fr 2fr;gap:8px;">
+        <div><div class="stripe-field-label">PLZ</div><input type="text" id="addrZip" class="stripe-input-field" placeholder="8001" maxlength="4"/></div>
+        <div><div class="stripe-field-label">Ort</div><input type="text" id="addrCity" class="stripe-input-field" placeholder="Zürich"/></div>
+      </div>
+      <div class="stripe-field-label">Land</div>
+      <select id="addrCountry" class="stripe-input-field" style="cursor:pointer;">
+        <option value="CH">🇨🇭 Schweiz</option>
+        <option value="DE">🇩🇪 Deutschland</option>
+        <option value="AT">🇦🇹 Österreich</option>
+        <option value="LI">🇱🇮 Liechtenstein</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- WISHLIST OVERLAY & PANEL -->
+<div class="wishlist-overlay" id="wishlistOverlay" onclick="closeWishlist()"></div>
+<div class="wishlist-panel" id="wishlistPanel">
+  <div class="wishlist-header">
+    <div class="wishlist-title">♡ WUNSCHLISTE</div>
+    <button class="cart-close" onclick="closeWishlist()">✕</button>
+  </div>
+  <div class="wishlist-body" id="wishlistBody">
+    <div class="wishlist-empty"><div style="font-size:50px;margin-bottom:12px;">♡</div><div style="font-family:'Orbitron',monospace;font-size:13px;color:#556070;">NOCH LEER</div><div style="font-size:13px;color:#3a4a5a;margin-top:8px;">Klicke auf ♡ bei Produkten</div></div>
+  </div>
+</div>
+
+<!-- PRODUCT DETAIL MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal()"></div>
+<div class="product-modal" id="productModal">
+  <button class="modal-close" onclick="closeModal()">✕</button>
+  <div class="modal-body">
+    <div class="modal-image">
+      <div class="modal-emoji" id="modalEmoji">🎮</div>
+    </div>
+    <div class="modal-info" id="modalInfo"></div>
+  </div>
+  <div class="modal-reviews" id="modalReviews"></div>
+</div>
+
+<!-- AUTH OVERLAY & MODAL -->
+<div class="auth-overlay" id="authOverlay" onclick="closeAuth()"></div>
+<div class="auth-modal" id="authModal">
+  <button class="auth-close" onclick="closeAuth()">&#x2715;</button>
+  <div id="authLogin">
+    <div class="auth-logo">NEX<span>LEVEL</span></div>
+    <div class="auth-title">WILLKOMMEN ZURÜCK</div>
+    <div class="auth-subtitle">Login in deinen Account</div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchAuth('login')">Login</button>
+      <button class="auth-tab" onclick="switchAuth('register')">Registrieren</button>
+    </div>
+    <div class="auth-field-label">E-Mail</div>
+    <input type="email" id="loginEmail" class="auth-input" placeholder="deine@email.com"/>
+    <div class="auth-field-label">Passwort</div>
+    <input type="password" id="loginPass" class="auth-input" placeholder="Passwort"/>
+    <div id="loginError" class="auth-error"></div>
+    <button class="auth-btn" onclick="doLogin()">EINLOGGEN</button>
+    <div class="auth-switch">Kein Account? <a onclick="switchAuth('register')">Jetzt registrieren</a></div>
+  </div>
+  <div id="authRegister" style="display:none;">
+    <div class="auth-logo">NEX<span>LEVEL</span></div>
+    <div class="auth-title">KONTO ERSTELLEN</div>
+    <div class="auth-subtitle">Werde Teil der NextLevel Community</div>
+    <div class="auth-tabs">
+      <button class="auth-tab" onclick="switchAuth('login')">Login</button>
+      <button class="auth-tab active" onclick="switchAuth('register')">Registrieren</button>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div><div class="auth-field-label">Vorname</div><input type="text" id="regFirst" class="auth-input" placeholder="Max"/></div>
+      <div><div class="auth-field-label">Nachname</div><input type="text" id="regLast" class="auth-input" placeholder="Mustermann"/></div>
+    </div>
+    <div class="auth-field-label">E-Mail</div>
+    <input type="email" id="regEmail" class="auth-input" placeholder="deine@email.com"/>
+    <div class="auth-field-label">Passwort (min. 6 Zeichen)</div>
+    <input type="password" id="regPass" class="auth-input" placeholder="Passwort"/>
+    <div class="auth-field-label">Passwort bestätigen</div>
+    <input type="password" id="regPass2" class="auth-input" placeholder="Passwort wiederholen"/>
+    <div class="auth-field-label">Strasse & Hausnummer</div>
+    <input type="text" id="regStreet" class="auth-input" placeholder="Bahnhofstrasse 1"/>
+    <div style="display:grid;grid-template-columns:1fr 2fr;gap:10px;">
+      <div><div class="auth-field-label">PLZ</div><input type="text" id="regZip" class="auth-input" placeholder="8001" maxlength="6"/></div>
+      <div><div class="auth-field-label">Ort</div><input type="text" id="regCity" class="auth-input" placeholder="Zürich"/></div>
+    </div>
+    <div class="auth-field-label">Land</div>
+    <select id="regCountry" class="auth-input" style="cursor:pointer;">
+      <option value="CH">Schweiz</option>
+      <option value="DE">Deutschland</option>
+      <option value="AT">Österreich</option>
+      <option value="LI">Liechtenstein</option>
+    </select>
+    <div id="regError" class="auth-error"></div>
+    <button class="auth-btn" onclick="doRegister()">KONTO ERSTELLEN</button>
+    <div class="auth-switch">Schon ein Account? <a onclick="switchAuth('login')">Einloggen</a></div>
+  </div>
+  <div id="authSuccess" style="display:none;text-align:center;padding:20px 0;">
+    <div style="font-size:60px;margin-bottom:16px;">🎮</div>
+    <div class="auth-logo">NEX<span>LEVEL</span></div>
+    <div class="auth-title" style="margin-top:16px;">WILLKOMMEN!</div>
+    <div id="authSuccessMsg" class="auth-subtitle"></div>
+    <button class="auth-btn" onclick="closeAuth()" style="margin-top:24px;">LOS GEHT'S</button>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ── DATA ──────────────────────────────────────────────
+const products = [
+  { id:1, name:"Cyber Warfare X", genre:"Shooter", desc:"Taktischer 5v5 Shooter mit Next-Gen Grafik und brutaler Kompetenz.", price:"59.90", emoji:"🔫", badge:"hot", category:"shooter",
+    rating:4.8, reviewCount:2341, stock:12,
+    features:["5v5 Tactical Gameplay","Next-Gen Raytracing","Anti-Cheat System","Ranked Modus","Crossplay PC/Console"],
+    reviews:[{name:"ProGamer_CH",stars:5,text:"Absolut bestes Spiel 2025. Grafik ist unglaublich, Gameplay smooth wie Butter.",date:"März 2025"},{name:"TactiX_99",stars:5,text:"Ranked ist süchtig machend. Team-Play auf absolutem Top-Niveau.",date:"Feb 2025"},{name:"Sniper_Hans",stars:4,text:"Sehr gutes Spiel, nur kleine Server-Probleme zu Stoßzeiten.",date:"Jan 2025"}]
+  },
+  { id:2, name:"Dragon Realm VII", genre:"RPG", desc:"Episches Open-World RPG mit 200+ Stunden Content und dynamischer KI.", price:"69.90", emoji:"🐉", badge:"new", category:"rpg",
+    rating:4.9, reviewCount:1876,stock:8,
+    features:["Open World 200+ Stunden","Dynamische KI-Companions","4K Ultra HD Support","Crafting & Building System","Multiple Endings"],
+    reviews:[{name:"RPG_Queen",stars:5,text:"Das beste RPG seit Jahren. Die Story hat mich komplett mitgerissen!",date:"Apr 2025"},{name:"EldenFan",stars:5,text:"Dragon Realm VII übertrifft alle Erwartungen. Pflichtspiel!",date:"März 2025"}]
+  },
+  { id:3, name:"Neon Drift Racing", genre:"Rennspiel", desc:"Futuristisches Arcade-Racing mit neonbeleuchteten Tracks.", price:"44.90", oldPrice:"59.90", emoji:"🏎️", badge:"sale", category:"action",
+    rating:4.5, reviewCount:987, stock:25,
+    features:["50+ Futuristische Strecken","Online Multiplayer 16 Spieler","Fahrzeug-Customization","Soundtrack von Top-DJs","VR-Support"],
+    reviews:[{name:"Speedster_Z",stars:5,text:"Adrenalin pur! Neon Drift macht so viel Spaß.",date:"März 2025"},{name:"Racefan",stars:4,text:"Tolle Grafik, leider etwas wenig Content bei Release.",date:"Feb 2025"}]
+  },
+  { id:4, name:"Shadow Protocol", genre:"Action", desc:"Stealth-Action mit cineastischer Story und brutalen Boss-Fights.", price:"54.90", emoji:"🥷", badge:"", category:"action",
+    rating:4.7, reviewCount:1543, stock:18,
+    features:["Cinematische Story 30h","Stealth & Action Hybrid","Brutal Boss-Fights","New Game+ Modus","Deutsch vollvertont"],
+    reviews:[{name:"StealthKing",stars:5,text:"Shadow Protocol = Meisterwerk. Story auf Film-Niveau.",date:"März 2025"}]
+  },
+  { id:5, name:"ProX Gaming Headset", genre:"Hardware", desc:"7.1 Surround Sound, 40mm Treiber, RGB Beleuchtung. Für echte Pros.", price:"129.90", emoji:"🎧", badge:"new", category:"hardware",
+    rating:4.6, reviewCount:634, stock:42,
+    features:["7.1 Virtual Surround","40mm Neodym-Treiber","RGB Beleuchtung","USB + 3.5mm Jack","Mikrofon Rauschunterdrückung"],
+    reviews:[{name:"AudioPro",stars:5,text:"Der Sound ist phänomenal! Höre Schritte durch Wände.",date:"März 2025"},{name:"StreamerMax",stars:4,text:"Sehr komfortabel, Mikrofon könnte besser sein.",date:"Feb 2025"}]
+  },
+  { id:6, name:"HyperEdge Mouse", genre:"Hardware", desc:"25K DPI optischer Sensor, 6 programmierbare Tasten, ultraleicht 62g.", price:"89.90", emoji:"🖱️", badge:"", category:"hardware",
+    rating:4.8, reviewCount:812, stock:31,
+    features:["25.600 DPI Optischer Sensor","62g Ultraleicht","6 Programmierbare Tasten","8000 Hz Polling Rate","RGB Chroma"],
+    reviews:[{name:"AimBot_Not",stars:5,text:"Beste Maus die ich je hatte. Aim hat sich sofort verbessert!",date:"März 2025"}]
+  },
+  { id:7, name:"Battle Legends", genre:"Strategy", desc:"Episches Echtzeit-Strategiespiel mit tausenden von Einheiten.", price:"39.90", emoji:"⚔️", badge:"hot", category:"action",
+    rating:4.4, reviewCount:2109, stock:50,
+    features:["Echtzeit-Strategie","1000+ Einheiten gleichzeitig","Kampagnen-Modus 40h","Online PvP","Map-Editor inklusive"],
+    reviews:[{name:"StrategyKing",stars:5,text:"Battle Legends ist der würdige Nachfolger alter Klassiker.",date:"März 2025"}]
+  },
+  { id:8, name:"RGB Mechanical Keyboard", genre:"Gear", desc:"Cherry MX Red Switches, per-key RGB, ultra-dünnes Aluminium-Gehäuse.", price:"149.90", oldPrice:"189.90", emoji:"⌨️", badge:"sale", category:"gear",
+    rating:4.9, reviewCount:2876, stock:14,
+    features:["Cherry MX Red Switches","Per-Key RGB Beleuchtung","Aluminium Gehäuse","Anti-Ghosting 100%","N-Key Rollover","USB-C Kabel abnehmbar"],
+    reviews:[{name:"TypeMaster",stars:5,text:"Perfekte Tastatur! Switches sind smooth, RGB sieht hammer aus.",date:"März 2025"},{name:"WorkAndGame",stars:5,text:"Für Gaming und Arbeit gleich gut. Beste Investition des Jahres.",date:"Feb 2025"}]
+  }
+];
+
+// ── STATE ──────────────────────────────────────────────
+let cart = [];
+let wishlist = [];
+let currentFilter = 'all';
+let currentSort = 'default';
+let currentSearch = '';
+let modalQty = 1;
+let modalProductId = null;
+
+var users = [];
+var currentUser = null;
+try { users = JSON.parse(localStorage.getItem('nx_users') || '[]'); } catch(e){}
+try { currentUser = JSON.parse(localStorage.getItem('nx_current') || 'null'); } catch(e){}
+
+// ── HELPERS ──────────────────────────────────────────
+function starsHtml(rating) {
+  const full = Math.floor(rating);
+  const half = rating % 1 >= 0.5;
+  let s = '';
+  for(let i=0;i<full;i++) s += '★';
+  if(half) s += '½';
+  while(s.replace('½','').length < 5 && s.length < 5) s += '☆';
+  return s;
+}
+
+function savingsText(price, oldPrice) {
+  if(!oldPrice) return '';
+  const save = parseFloat(oldPrice) - parseFloat(price);
+  const pct = Math.round(save / parseFloat(oldPrice) * 100);
+  return `Du sparst CHF ${save.toFixed(2)} (${pct}%)`;
+}
+
+function deliveryText() {
+  const days = ['Morgen', 'Übermorgen', 'In 3 Tagen'];
+  return '⚡ Express: ' + days[Math.floor(Math.random()*2)] + ' lieferbar';
+}
+
+// ── RENDER PRODUCTS ───────────────────────────────────
+function getFiltered() {
+  let list = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter);
+  if(currentSearch) {
+    const q = currentSearch.toLowerCase();
+    list = list.filter(p => p.name.toLowerCase().includes(q) || p.genre.toLowerCase().includes(q) || p.desc.toLowerCase().includes(q));
+  }
+  if(currentSort === 'price-asc') list = [...list].sort((a,b) => parseFloat(a.price)-parseFloat(b.price));
+  else if(currentSort === 'price-desc') list = [...list].sort((a,b) => parseFloat(b.price)-parseFloat(a.price));
+  else if(currentSort === 'rating') list = [...list].sort((a,b) => b.rating-a.rating);
+  else if(currentSort === 'name') list = [...list].sort((a,b) => a.name.localeCompare(b.name));
+  return list;
+}
+
+function renderProducts() {
+  const grid = document.getElementById('storeGrid');
+  const list = getFiltered();
+  document.getElementById('resultCount').textContent = list.length + ' Produkt' + (list.length !== 1 ? 'e' : '');
+  if(list.length === 0) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px;color:#556070;font-family:'Orbitron',monospace;font-size:14px;letter-spacing:2px;">KEINE PRODUKTE GEFUNDEN</div>`;
+    return;
+  }
+  grid.innerHTML = list.map(p => {
+    const inWish = wishlist.some(w => w.id === p.id);
+    return `
+    <div class="product-card" data-id="${p.id}">
+      ${p.badge ? `<div class="product-badge badge-${p.badge}">${p.badge==='new'?'NEW':p.badge==='hot'?'🔥 HOT':'% SALE'}</div>` : ''}
+      <div class="product-wishlist ${inWish?'active':''}" onclick="toggleWishlist(${p.id},event)" title="Zur Wunschliste">${inWish?'♥':'♡'}</div>
+      <div class="product-img-wrap" onclick="openModal(${p.id})"><div class="product-img">${p.emoji}</div></div>
+      <div class="product-info">
+        <div class="product-genre">${p.genre}</div>
+        <div class="product-name" onclick="openModal(${p.id})">${p.name}</div>
+        <div class="product-rating">
+          <span class="stars">${starsHtml(p.rating)}</span>
+          <span class="rating-score">${p.rating}</span>
+          <span class="rating-count">(${p.reviewCount.toLocaleString('de-CH')})</span>
+        </div>
+        <div class="product-desc">${p.desc}</div>
+        <div class="product-footer">
+          <div class="product-price">
+            ${p.oldPrice ? `<span class="old">CHF ${p.oldPrice}</span>` : ''}
+            CHF ${p.price}
+            ${p.oldPrice ? `<span class="savings">${savingsText(p.price,p.oldPrice)}</span>` : ''}
+          </div>
+          <button class="add-btn" onclick="addToCart(${p.id})">+ KAUFEN</button>
+        </div>
+        <div class="product-delivery">${deliveryText()}</div>
+      </div>
+    </div>`
+  }).join('');
+}
+
+function filterProducts(cat, btn) {
+  currentFilter = cat;
+  currentSearch = '';
+  document.getElementById('searchInput').value = '';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.cat-nav-item').forEach(b => b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderProducts();
+  document.getElementById('store').scrollIntoView({behavior:'smooth'});
+}
+
+function sortProducts(val) { currentSort = val; renderProducts(); }
+
+function handleSearch() {
+  currentSearch = document.getElementById('searchInput').value;
+  renderProducts();
+  if(currentSearch) document.getElementById('store').scrollIntoView({behavior:'smooth'});
+}
+
+// ── ALSO BOUGHT ───────────────────────────────────────
+function renderAlsoBought() {
+  const grid = document.getElementById('alsoBoughtGrid');
+  grid.innerHTML = products.map(p => `
+    <div class="also-card" onclick="openModal(${p.id})">
+      <div class="also-emoji">${p.emoji}</div>
+      <div class="also-name">${p.name}</div>
+      <div class="also-price">CHF ${p.price}</div>
+    </div>`).join('');
+}
+
+// ── DEALS BANNER ──────────────────────────────────────
+function renderDeals() {
+  const deals = products.filter(p => p.badge === 'sale' || p.badge === 'hot');
+  const banner = document.getElementById('dealsBanner');
+  deals.forEach(p => {
+    const d = document.createElement('div');
+    d.className = 'deal-card';
+    d.onclick = () => openModal(p.id);
+    d.innerHTML = `<div class="deal-emoji">${p.emoji}</div><div class="deal-info"><div class="deal-label">${p.badge==='sale'?'SALE':'🔥 HOT'}</div><div class="deal-name">${p.name}</div><div class="deal-price">CHF ${p.price}${p.oldPrice?` <s style="color:#3a4a5a;font-size:11px;">CHF ${p.oldPrice}</s>`:''}</div></div>${p.badge==='sale'?`<div class="deal-badge">-${Math.round((parseFloat(p.oldPrice)-parseFloat(p.price))/parseFloat(p.oldPrice)*100)}%</div>`:''}`;
+    banner.appendChild(d);
+  });
+}
+
+// ── PRODUCT MODAL ─────────────────────────────────────
+function openModal(id) {
+  const p = products.find(x => x.id === id);
+  if(!p) return;
+  modalProductId = id;
+  modalQty = 1;
+  document.getElementById('modalEmoji').textContent = p.emoji;
+
+  const inWish = wishlist.some(w => w.id === p.id);
+  document.getElementById('modalInfo').innerHTML = `
+    <div class="modal-genre">${p.genre}</div>
+    <div class="modal-name">${p.name}</div>
+    <div class="modal-rating">
+      <span class="stars" style="font-size:16px;">${starsHtml(p.rating)}</span>
+      <span class="rating-score" style="font-size:14px;">${p.rating}</span>
+      <span class="rating-count">(${p.reviewCount.toLocaleString('de-CH')} Bewertungen)</span>
+    </div>
+    <div style="display:flex;align-items:baseline;gap:0;margin-bottom:16px;">
+      <span class="modal-price-main">CHF ${p.price}</span>
+      ${p.oldPrice?`<span class="modal-price-old">CHF ${p.oldPrice}</span><span class="modal-savings">${savingsText(p.price,p.oldPrice)}</span>`:''}
+    </div>
+    <div class="modal-desc">${p.desc}</div>
+    <ul class="modal-features">${p.features.map(f=>`<li>${f}</li>`).join('')}</ul>
+    <div class="modal-stock">✓ Auf Lager (${p.stock} verfügbar) · ${deliveryText()}</div>
+    <div class="modal-delivery"><strong>Kostenloser Versand</strong> · 14 Tage Rückgabe · Sicher via Stripe</div>
+    <div class="modal-qty-row">
+      <span class="modal-qty-label">Menge</span>
+      <div class="modal-qty">
+        <button onclick="changeModalQty(-1)">−</button>
+        <span id="modalQtyDisplay">1</span>
+        <button onclick="changeModalQty(1)">+</button>
+      </div>
+    </div>
+    <button class="modal-add-btn" onclick="addToCartQty(${p.id})">+ IN DEN WARENKORB</button>
+    <button class="modal-wishlist-btn" onclick="toggleWishlist(${p.id})" id="modalWishBtn">${inWish?'♥ AUF WUNSCHLISTE':'♡ ZUR WUNSCHLISTE'}</button>
+  `;
+
+  // Reviews
+  const ratingDist = [
+    {stars:5, pct:72}, {stars:4, pct:18}, {stars:3, pct:6}, {stars:2, pct:2}, {stars:1, pct:2}
+  ];
+  document.getElementById('modalReviews').innerHTML = `
+    <div class="review-header">KUNDENBEWERTUNGEN</div>
+    <div class="review-summary">
+      <div>
+        <div class="review-big-score">${p.rating}</div>
+        <div class="stars" style="font-size:18px;">${starsHtml(p.rating)}</div>
+        <div style="font-size:12px;color:#556070;margin-top:4px;">${p.reviewCount.toLocaleString('de-CH')} Bewertungen</div>
+      </div>
+      <div class="review-bars">
+        ${ratingDist.map(r=>`
+          <div class="review-bar-row">
+            <span class="review-bar-label">${r.stars}★</span>
+            <div class="review-bar-track"><div class="review-bar-fill" style="width:${r.pct}%"></div></div>
+            <span class="review-bar-count">${r.pct}%</span>
+          </div>`).join('')}
+      </div>
+    </div>
+    <div class="review-list">
+      ${p.reviews.map(r=>`
+        <div class="review-item">
+          <div class="review-top">
+            <div>
+              <span class="reviewer-name">${r.name}</span>
+              <div class="stars" style="font-size:13px;">${'★'.repeat(r.stars)}${'☆'.repeat(5-r.stars)}</div>
+            </div>
+            <span class="review-date">${r.date}</span>
+          </div>
+          <div class="review-text">${r.text}</div>
+        </div>`).join('')}
+    </div>
+  `;
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.getElementById('productModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.getElementById('productModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function changeModalQty(delta) {
+  modalQty = Math.max(1, Math.min(10, modalQty + delta));
+  document.getElementById('modalQtyDisplay').textContent = modalQty;
+}
+
+function addToCartQty(id) {
+  for(let i=0; i<modalQty; i++) addToCartSilent(id);
+  showToast(`✓ ${modalQty}× in den Warenkorb!`);
+  closeModal();
+}
+
+// ── CART ──────────────────────────────────────────────
+function addToCartSilent(id) {
+  const p = products.find(x => x.id === id);
+  if(!p) return;
+  const ex = cart.find(i => i.id === p.id);
+  if(ex) ex.qty++;
+  else cart.push({...p, qty:1});
+  updateCartBadge();
+  renderCart();
+}
+
+function addToCart(id) {
+  addToCartSilent(id);
+  showToast('✓ In den Warenkorb!');
+}
+
+function removeFromCart(id) { cart = cart.filter(i => i.id !== id); updateCartBadge(); renderCart(); }
+
+function changeQty(id, delta) {
+  const item = cart.find(i => i.id === id);
+  if(!item) return;
+  item.qty += delta;
+  if(item.qty <= 0) removeFromCart(id);
+  else { updateCartBadge(); renderCart(); }
+}
+
+function updateCartBadge() {
+  const total = cart.reduce((s,i) => s+i.qty, 0);
+  const badge = document.getElementById('cartBadge');
+  const navBadge = document.getElementById('cartNavBadge');
+  badge.textContent = total;
+  navBadge.textContent = total;
+  if(total > 0) { badge.classList.add('visible'); navBadge.style.display = 'flex'; }
+  else { badge.classList.remove('visible'); navBadge.style.display = 'none'; }
+  badge.classList.remove('pulse'); void badge.offsetWidth; badge.classList.add('pulse');
+}
+
+function cartTotal() { return cart.reduce((s,i) => s + parseFloat(i.price)*i.qty, 0).toFixed(2); }
+
+function renderCart() {
+  const body = document.getElementById('cartBody');
+  if(cart.length === 0) {
+    body.innerHTML = `<div class="cart-empty"><div style="font-size:60px;margin-bottom:16px;">🛒</div><div style="font-family:'Orbitron',monospace;font-size:14px;color:#556070;letter-spacing:2px;">WARENKORB LEER</div><div style="font-size:13px;color:#3a4a5a;margin-top:8px;">Füge Produkte hinzu!</div></div>`;
+    document.getElementById('cartFooter').style.display = 'none';
+    return;
+  }
+  document.getElementById('cartFooter').style.display = 'block';
+  body.innerHTML = cart.map(item => `
+    <div class="cart-item">
+      <div class="cart-item-emoji">${item.emoji}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">CHF ${(parseFloat(item.price)*item.qty).toFixed(2)}</div>
+        <div class="cart-item-controls">
+          <button class="qty-btn" onclick="changeQty(${item.id},-1)">−</button>
+          <span class="qty-num">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${item.id},1)">+</button>
+          <button class="remove-btn" onclick="removeFromCart(${item.id})">✕</button>
+        </div>
+      </div>
+    </div>`).join('');
+  document.getElementById('cartTotalAmt').textContent = 'CHF ' + cartTotal();
+}
+
+function openCart() { document.getElementById('cartDrawer').classList.add('open'); document.getElementById('cartOverlay').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('cartOverlay').classList.remove('open'); document.body.style.overflow=''; }
+
+function selectPayment(method) {
+  document.querySelectorAll('.pay-option').forEach(b => b.classList.remove('selected'));
+  document.querySelector(`.pay-option[data-method="${method}"]`).classList.add('selected');
+  document.getElementById('stripeCardForm').style.display = method==='card' ? 'block' : 'none';
+  document.getElementById('twintInfo').style.display = method==='twint' ? 'block' : 'none';
+  document.getElementById('checkoutBtnText').textContent = method==='card' ? 'JETZT KAUFEN' : 'WEITER ZU TWINT';
+}
+
+function formatCard(input) { let v = input.value.replace(/\D/g,'').substring(0,16); input.value = v.replace(/(.{4})/g,'$1 ').trim(); }
+function formatExpiry(input) { let v = input.value.replace(/\D/g,'').substring(0,4); if(v.length>=2) v=v.substring(0,2)+'/'+v.substring(2); input.value=v; }
+
+function validateCard() {
+  const name=document.getElementById('cardName').value.trim();
+  const number=document.getElementById('cardNumber').value.replace(/\s/g,'');
+  const expiry=document.getElementById('cardExpiry').value;
+  const cvc=document.getElementById('cardCvc').value;
+  const err=document.getElementById('stripe-error');
+  if(!name){err.textContent='Bitte Karteninhaber eingeben.';return false;}
+  if(number.length<16){err.textContent='Ungültige Kartennummer.';return false;}
+  if(expiry.length<5){err.textContent='Ungültiges Ablaufdatum.';return false;}
+  if(cvc.length<3){err.textContent='Ungültiger CVC.';return false;}
+  err.textContent=''; return true;
+}
+
+function checkout() {
+  const selected = document.querySelector('.pay-option.selected');
+  if(!selected) return;
+  const method = selected.dataset.method;
+  const btn = document.getElementById('checkoutBtn');
+  if(method==='card' && !validateCard()) return;
+  btn.disabled = true;
+  document.getElementById('checkoutBtnText').textContent = 'WIRD VERARBEITET...';
+  setTimeout(() => {
+    cart = []; updateCartBadge(); renderCart(); closeCart();
+    btn.disabled = false;
+    document.getElementById('checkoutBtnText').textContent = 'JETZT KAUFEN';
+    ['cardName','cardNumber','cardExpiry','cardCvc'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+    showToast(`✓ Zahlung via ${method==='card'?'Kreditkarte':'TWINT'} erfolgreich! 🎉`);
+  }, 1800);
+}
+
+// ── WISHLIST ──────────────────────────────────────────
+function toggleWishlist(id, event) {
+  if(event) { event.stopPropagation(); }
+  const idx = wishlist.findIndex(w => w.id === id);
+  const p = products.find(x => x.id === id);
+  if(idx >= 0) { wishlist.splice(idx,1); showToast('♡ Aus Wunschliste entfernt'); }
+  else { wishlist.push(p); showToast('♥ Zur Wunschliste hinzugefügt!'); }
+  updateWishlistBadge();
+  renderWishlist();
+  renderProducts(); // refresh hearts
+  // update modal button if open
+  const mwb = document.getElementById('modalWishBtn');
+  if(mwb) mwb.textContent = wishlist.some(w=>w.id===id) ? '♥ AUF WUNSCHLISTE' : '♡ ZUR WUNSCHLISTE';
+}
+
+function updateWishlistBadge() {
+  const b = document.getElementById('wishlistBadge');
+  b.textContent = wishlist.length;
+  b.classList.toggle('visible', wishlist.length > 0);
+}
+
+function renderWishlist() {
+  const body = document.getElementById('wishlistBody');
+  if(wishlist.length===0) {
+    body.innerHTML = `<div class="wishlist-empty"><div style="font-size:50px;margin-bottom:12px;">♡</div><div style="font-family:'Orbitron',monospace;font-size:13px;color:#556070;">NOCH LEER</div><div style="font-size:13px;color:#3a4a5a;margin-top:8px;">Klicke auf ♡ bei Produkten</div></div>`;
+    return;
+  }
+  body.innerHTML = wishlist.map(p => `
+    <div class="wishlist-item">
+      <div class="wishlist-emoji">${p.emoji}</div>
+      <div class="wishlist-info">
+        <div class="wishlist-name">${p.name}</div>
+        <div class="wishlist-price">CHF ${p.price}</div>
+      </div>
+      <button class="wishlist-add" onclick="addToCart(${p.id}); toggleWishlist(${p.id})">+ KAUFEN</button>
+      <button class="wishlist-remove" onclick="toggleWishlist(${p.id})">✕</button>
+    </div>`).join('');
+}
+
+function openWishlist() { document.getElementById('wishlistPanel').classList.add('open'); document.getElementById('wishlistOverlay').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeWishlist() { document.getElementById('wishlistPanel').classList.remove('open'); document.getElementById('wishlistOverlay').classList.remove('open'); document.body.style.overflow=''; }
+
+// ── TOAST ─────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.innerHTML = msg || '✓ Erledigt!';
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ── AUTH ──────────────────────────────────────────────
+function updateNavAuth() {
+  var btn=document.getElementById('navAuthBtn');
+  var label=document.getElementById('navAuthLabel');
+  if(!btn) return;
+  if(currentUser) { label.textContent=currentUser.first.toUpperCase(); btn.classList.add('logged-in'); btn.onclick=showUserMenu; }
+  else { label.textContent='LOGIN'; btn.classList.remove('logged-in'); btn.onclick=function(){openAuth('login');}; }
+}
+
+function openAuth(tab) { document.getElementById('authOverlay').classList.add('open'); document.getElementById('authModal').classList.add('open'); switchAuth(tab); }
+function closeAuth() { document.getElementById('authOverlay').classList.remove('open'); document.getElementById('authModal').classList.remove('open'); }
+
+function switchAuth(tab) {
+  document.getElementById('authLogin').style.display = tab==='login' ? 'block' : 'none';
+  document.getElementById('authRegister').style.display = tab==='register' ? 'block' : 'none';
+  document.getElementById('authSuccess').style.display = 'none';
+  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (tab==='login'&&i===0)||(tab==='register'&&i===1)||(tab==='login'&&i===2)||(tab==='register'&&i===3)));
+}
+
+function doLogin() {
+  var email=document.getElementById('loginEmail').value.trim().toLowerCase();
+  var pass=document.getElementById('loginPass').value;
+  var err=document.getElementById('loginError');
+  if(!email||!pass){err.textContent='Bitte alle Felder ausfüllen.';return;}
+  var user=users.find(function(u){return u.email===email&&u.pass===pass;});
+  if(!user){err.textContent='E-Mail oder Passwort falsch.';return;}
+  err.textContent=''; currentUser=user;
+  try{localStorage.setItem('nx_current',JSON.stringify(user));}catch(e){}
+  updateNavAuth(); prefillAddress();
+  showAuthSuccess('Hallo '+user.first+'! Schön dass du wieder da bist. 🎮');
+}
+
+function doRegister() {
+  var first=document.getElementById('regFirst').value.trim();
+  var last=document.getElementById('regLast').value.trim();
+  var email=document.getElementById('regEmail').value.trim().toLowerCase();
+  var pass=document.getElementById('regPass').value;
+  var pass2=document.getElementById('regPass2').value;
+  var street=document.getElementById('regStreet').value.trim();
+  var zip=document.getElementById('regZip').value.trim();
+  var city=document.getElementById('regCity').value.trim();
+  var country=document.getElementById('regCountry').value;
+  var err=document.getElementById('regError');
+  if(!first||!last||!email||!pass||!street||!zip||!city){err.textContent='Bitte alle Felder ausfüllen.';return;}
+  if(pass.length<6){err.textContent='Passwort mindestens 6 Zeichen.';return;}
+  if(pass!==pass2){err.textContent='Passwörter stimmen nicht überein.';return;}
+  if(users.find(function(u){return u.email===email;})){err.textContent='E-Mail bereits registriert.';return;}
+  var user={first:first,last:last,email:email,pass:pass,street:street,zip:zip,city:city,country:country};
+  users.push(user);
+  try{localStorage.setItem('nx_users',JSON.stringify(users));}catch(e){}
+  currentUser=user;
+  try{localStorage.setItem('nx_current',JSON.stringify(user));}catch(e){}
+  updateNavAuth(); prefillAddress();
+  showAuthSuccess('Willkommen bei NextLevel, '+first+'! Dein Account wurde erstellt. 🎮');
+}
+
+function showAuthSuccess(msg) {
+  document.getElementById('authLogin').style.display='none';
+  document.getElementById('authRegister').style.display='none';
+  document.getElementById('authSuccess').style.display='block';
+  document.getElementById('authSuccessMsg').textContent=msg;
+}
+
+function showUserMenu() {
+  if(confirm('Eingeloggt als '+currentUser.first+' '+currentUser.last+'\n\nAusloggen?')) {
+    currentUser=null;
+    try{localStorage.removeItem('nx_current');}catch(e){}
+    updateNavAuth();
+  }
+}
+
+function prefillAddress() {
+  if(!currentUser) return;
+  var fields={addrFirst:currentUser.first,addrLast:currentUser.last,addrStreet:currentUser.street,addrZip:currentUser.zip,addrCity:currentUser.city};
+  Object.keys(fields).forEach(function(id){var el=document.getElementById(id);if(el&&fields[id])el.value=fields[id];});
+}
+
+// ──
